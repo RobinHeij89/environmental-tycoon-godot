@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://dvhg2jwftu3lc"]
+
+[ext_resource type="Script" path="res://terrain/terrain.gd" id="1_xioas"]
+[ext_resource type="Script" path="res://terrain/generator_component.gd" id="2_epe6g"]
+[ext_resource type="Script" path="res://terrain/terrain_render_component.gd" id="3_dfq6v"]
+
+[node name="Terrain" type="Node2D" node_paths=PackedStringArray("generator_component", "render_component")]
+script = ExtResource("1_xioas")
+generator_component = NodePath("GeneratorComponent")
+render_component = NodePath("TerrainRenderComponent")
+
+[node name="GeneratorComponent" type="Node2D" parent="."]
+script = ExtResource("2_epe6g")
+
+[node name="TerrainRenderComponent" type="Node2D" parent="."]
+script = ExtResource("3_dfq6v")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(0.5, 0.5)
+drag_horizontal_enabled = true
+drag_vertical_enabled = true
