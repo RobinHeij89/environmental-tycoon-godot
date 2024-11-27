@@ -17,6 +17,7 @@ class TerrainInputData:
 	var uuid: String
 	var displayName: String
 	var terrainTiles: Array[TerrainTile]
+	var roadTiles: Array[TerrainTile]
 
 var terrain_input_data: TerrainInputData
 
@@ -42,7 +43,8 @@ func set_terrain_input_data(file_data: Variant):
 		terrainTileObject.x = terrainTile.x
 		terrainTileObject.y = terrainTile.y
 		terrainTileObject.type = terrainTile.type
-		#terrainTileObject.isValid = terrainTile.isValid if terrainTile.isValid else false
+		terrainTileObject.isValid = terrainTile.isValid if terrainTile.has("isValid") else false
 		terrainTileObject.elevation = terrainTile.elevation
 		terrainTileObject.treeHM = terrainTile.treeHM
 		terrain_input_data.terrainTiles.append(terrainTileObject)
+	# check roadTiles and assign a roadTile texture
