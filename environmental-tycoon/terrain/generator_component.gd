@@ -7,7 +7,7 @@ class TerrainTile:
 	var x: int
 	var y: int
 	var type: TerrainTileType
-	var isValid: bool
+	var hasRoadTile: bool
 	var elevation: int
 	var treeHM: int
 
@@ -33,18 +33,31 @@ func import_json():
 	var data = JSON.parse_string(file.get_as_text())
 	return data
 
+func return_tile(x: int, y: int, arr: Array[Variant]):
+	var results = arr.filter(func(element): return element.x == x and element.y == y)
+	if results.size() == 0:
+		return null
+	else: 
+		return results[0]
+		
 func set_terrain_input_data(file_data: Variant):
 	terrain_input_data.chunkAmount = file_data.chunkAmount
 	terrain_input_data.chunkSize = file_data.chunkSize
 	terrain_input_data.uuid = file_data.uuid
 	terrain_input_data.displayName = file_data.displayName
-	for terrainTile in file_data.terrainTiles:
+	for idx in file_data.terrainTiles.size():
+		var terrainTile = file_data.terrainTiles[idx]
 		var terrainTileObject = TerrainTile.new()
 		terrainTileObject.x = terrainTile.x
 		terrainTileObject.y = terrainTile.y
 		terrainTileObject.type = terrainTile.type
-		terrainTileObject.isValid = terrainTile.isValid if terrainTile.has("isValid") else false
 		terrainTileObject.elevation = terrainTile.elevation
 		terrainTileObject.treeHM = terrainTile.treeHM
 		terrain_input_data.terrainTiles.append(terrainTileObject)
-	# check roadTiles and assign a roadTile texture
+		# check roadTiles and assign a roadTile texture
+		var roadTile = return_tile(terrainTile.x, terrainTile.y, file_data.roadTiles)
+		if roadTile:
+			terrainTileObject.hasRoadTile = true
+		else: 
+			terrainTileObject.hasRoadTile = false
+			

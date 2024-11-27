@@ -76,7 +76,7 @@ func coalesce_type(a,b):
 	return a.type if coalesce(a,b) else b
 
 func coalesce_road(a,b):
-	return a.type == GeneratorComponent.TerrainTileType.GRASS if coalesce(a,b) else b
+	return a.hasRoadTile if coalesce(a,b) else b
 
 func return_texture(tile: GeneratorComponent.TerrainTile, terrain_data: Array[GeneratorComponent.TerrainTile]):
 	var north = coalesce_type(return_tile(tile.x, tile.y+1, terrain_data), GeneratorComponent.TerrainTileType.WATER)
@@ -111,6 +111,9 @@ func return_texture(tile: GeneratorComponent.TerrainTile, terrain_data: Array[Ge
 	return texture
 
 func return_road_texture(tile: GeneratorComponent.TerrainTile, terrain_data: Array[GeneratorComponent.TerrainTile]):
+	# Check if this is even correct..
+	# We need the neighbours of all tiles, and check if there is a road, but also itself.
+	# The grid should NOT be a dualgrid now. It should be on the original grid.
 	var north = coalesce_road(return_tile(tile.x, tile.y+1, terrain_data), false)
 	var north_east = coalesce_road(return_tile(tile.x+1, tile.y+1, terrain_data), false)
 	var east = coalesce_road(return_tile(tile.x+1, tile.y, terrain_data), false)
